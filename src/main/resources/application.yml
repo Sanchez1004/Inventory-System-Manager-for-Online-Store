@@ -1,1 +1,3 @@
-spring.application.name=Inventory System Manager for Online Store
+spring:
+  application:
+    name: Inventory System Manager for Online Store
