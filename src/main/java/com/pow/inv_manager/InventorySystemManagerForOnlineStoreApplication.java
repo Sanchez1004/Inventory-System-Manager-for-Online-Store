@@ -9,5 +9,4 @@ public class InventorySystemManagerForOnlineStoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(InventorySystemManagerForOnlineStoreApplication.class, args);
     }
-
 }
