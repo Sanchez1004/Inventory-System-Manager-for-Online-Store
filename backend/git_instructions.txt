@@ -1,0 +1,39 @@
+- Para agregar todos los cambios hechos al repositorio local
+    git add .
+
+- Para agregar los cambios de un archivo o directorio especifico
+    git add <archivo.extension o directorio"
+
+- Para agregar un commit a todos los cambios ya agregado con "git add"
+    git commit -m "commit deseado a agregar"
+
+- Para subir los cambios al repositorio remoto
+    git push -u origin <rama>
+
+- Para traer los nuevos cambios del repositorio remoto
+    git pull origin <rama>
+
+- Para descarcartar cambios sin guardad del repositorio local
+    git checkout -- .
+    git restore .
+
+- Verificar rama actual y si hay cambios pendientes
+    git status
+
+- Para cambiar a una rama existente
+    git checkout <nombre_de_la_rama>
+
+- Para volver a la rama anterior
+    git checkout -
+
+- Para crear y cambiar a una nueva rama
+    git checkout -b <nombre_de_la_nueva_rama>
+
+- Para ver todas las ramas locales (repositorio local)
+    git branch
+
+- Para ver todas las ramas remotas (repositorio remoto)
+    git branch -a
+
+- Guardar cambios temporalmente
+    git stash
