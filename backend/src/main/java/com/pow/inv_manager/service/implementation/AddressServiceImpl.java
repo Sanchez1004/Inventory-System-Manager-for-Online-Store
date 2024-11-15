@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -58,7 +57,7 @@ public class AddressServiceImpl implements AddressService {
     public List<AddressDTO> getAllAddresses() {
         return addressRepository.findAll().stream()
                 .map(addressMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void deleteAddress(Long addressId) throws AddressException {

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SupplierServiceImpl implements SupplierService {
@@ -36,12 +35,11 @@ public class SupplierServiceImpl implements SupplierService {
      *
      * @param supplierDTO the data transfer object containing the supplier's information
      * @return the saved supplier information as a DTO
-     * @throws SupplierException if the data is invalid or supplier already exists
      */
     @Override
     @Transactional
     @SneakyThrows
-    public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws SupplierException {
+    public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
         validateSupplierData(supplierDTO);
 
         if (supplierRepository.existsById(supplierDTO.getId())) {
@@ -54,7 +52,7 @@ public class SupplierServiceImpl implements SupplierService {
         }
 
         Supplier supplierEntity = supplierMapper.toEntity(supplierDTO);
-        supplierEntity.setRole(Role.SUPPLIER);
+        supplierEntity.setRole(Role.SUPPLIER.toString());
         supplierEntity.setAddress(supplierDTO.getAddress()); // link the address
         Supplier savedSupplier = supplierRepository.save(supplierEntity);
         return supplierMapper.toDTO(savedSupplier);
@@ -130,7 +128,7 @@ public class SupplierServiceImpl implements SupplierService {
     public List<SupplierDTO> getAllSuppliers() {
         return supplierRepository.findAll().stream()
                 .map(supplierMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

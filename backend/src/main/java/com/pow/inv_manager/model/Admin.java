@@ -30,7 +30,7 @@ public class Admin {
     private String email;
     private String password;
     private String username;
-    private Role role;
+    private String role;
 
     @OneToOne
     @JoinColumn(name = "address_id", unique = true)

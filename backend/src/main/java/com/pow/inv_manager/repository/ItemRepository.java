@@ -9,5 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    List<Item> findFiltered(Optional<String> category, Optional<Long> supplierId, Optional<Double> minPrice, Optional<Double> maxPrice);
 }

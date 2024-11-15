@@ -21,5 +21,5 @@ public class ClientDTO {
     private String phone;
     private String password;
     private Address address;
-    private Role role;
+    private String role;
 }

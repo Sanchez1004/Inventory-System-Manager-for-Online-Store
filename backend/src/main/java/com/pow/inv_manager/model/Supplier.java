@@ -29,7 +29,7 @@ public class Supplier {
     private String lastName;
     private String companyName;
     private String email;
-    private Role role;
+    private String role;
 
     @OneToOne
     @JoinColumn(name = "address_id", unique = true)

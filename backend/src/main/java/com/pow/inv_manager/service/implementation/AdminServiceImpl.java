@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -56,7 +55,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         Admin adminEntity = adminMapper.toEntity(adminDTO);
-        adminEntity.setRole(Role.ADMIN);
+        adminEntity.setRole(Role.ADMIN.toString());
         adminEntity.setAddress(adminDTO.getAddress()); // Associate address
         Admin savedAdmin = adminRepository.save(adminEntity);
         return adminMapper.toDTO(savedAdmin);
@@ -132,7 +131,7 @@ public class AdminServiceImpl implements AdminService {
     public List<AdminDTO> getAllAdmins() {
         return adminRepository.findAll().stream()
                 .map(adminMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

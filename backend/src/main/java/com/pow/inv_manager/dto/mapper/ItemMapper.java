@@ -11,6 +11,7 @@ public class ItemMapper {
                 .id(itemDTO.getId())
                 .name(itemDTO.getName())
                 .description(itemDTO.getDescription())
+                .category(itemDTO.getCategory())
                 .build();
     }
 
@@ -19,6 +20,7 @@ public class ItemMapper {
                 .id(item.getId())
                 .description(item.getDescription())
                 .name(item.getName())
+                .category(item.getCategory())
                 .build();
     }
 }

@@ -14,9 +14,8 @@ public interface AdminService {
 
     AdminDTO getAdmin(Long adminId) throws AdminException;
 
-    List<AdminDTO> getAllAdmins() throws AdminException;
+    List<AdminDTO> getAllAdmins();
 
-    @SneakyThrows
     @Transactional
     void deleteAdminById(Long id);
 }

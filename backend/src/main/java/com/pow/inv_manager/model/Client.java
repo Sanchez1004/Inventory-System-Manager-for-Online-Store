@@ -29,7 +29,7 @@ public class Client {
     private String email;
     private String phone;
     private String password;
-    private Role role;
+    private String role;
 
     @OneToOne
     @JoinColumn(name = "address_id", unique = true)

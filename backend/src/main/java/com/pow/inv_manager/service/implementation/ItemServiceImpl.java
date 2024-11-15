@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -27,6 +25,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Transactional
+    @Override
     public ItemDTO createItem(ItemDTO itemDTO) throws ItemException {
         validateItemData(itemDTO);
 
@@ -65,12 +64,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> listItems(Optional<String> category, Optional<Long> supplierId,
-                                   Optional<Double> minPrice, Optional<Double> maxPrice) {
-        List<Item> items = itemRepository.findFiltered(category, supplierId, minPrice, maxPrice);
+    public List<ItemDTO> listItems() {
+        List<Item> items = itemRepository.findAll();
         return items.stream()
                 .map(itemMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private void validateItemData(ItemDTO itemDTO) throws ItemException {

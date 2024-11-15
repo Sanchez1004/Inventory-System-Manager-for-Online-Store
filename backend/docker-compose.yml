@@ -20,6 +20,9 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    volumes:
+      - ../rabbitmq/data/:/var/lib/rabbitmq
+      - ../rabbitmq/log/:/var/log/rabbitmq
 
 volumes:
   pg_data:

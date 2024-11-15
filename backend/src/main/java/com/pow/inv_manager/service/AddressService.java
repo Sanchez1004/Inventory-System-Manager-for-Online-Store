@@ -9,6 +9,6 @@ public interface AddressService {
     AddressDTO createAddress(AddressDTO addressDTO) throws AddressException;
     AddressDTO updateAddress(Long addressId, AddressDTO addressDTO) throws AddressException;
     AddressDTO getAddress(Long addressId) throws AddressException;
-    List<AddressDTO> getAllAddresses() throws AddressException;
+    List<AddressDTO> getAllAddresses();
     void deleteAddress(Long id) throws AddressException;
 }

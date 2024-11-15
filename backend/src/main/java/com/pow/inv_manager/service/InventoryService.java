@@ -2,6 +2,7 @@ package com.pow.inv_manager.service;
 
 import com.pow.inv_manager.dto.InventoryDTO;
 import com.pow.inv_manager.exception.InventoryException;
+import com.pow.inv_manager.utils.Category;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,10 +17,12 @@ public interface InventoryService {
     InventoryDTO updateInventory(Long id, InventoryDTO inventoryDTO) throws InventoryException;
 
     @Transactional
+    void reduceInventory(InventoryDTO inventoryDTO) throws InventoryException;
+
+    @Transactional
     void deleteInventory(Long id) throws InventoryException;
 
     InventoryDTO getInventoryById(Long id) throws InventoryException;
 
-    List<InventoryDTO> getInventory(Optional<String> category, Optional<Long> supplierId,
-                                    Optional<Double> minPrice, Optional<Double> maxPrice);
+    List<InventoryDTO> getInventory();
 }

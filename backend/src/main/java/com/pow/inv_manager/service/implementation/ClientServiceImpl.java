@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -38,12 +37,11 @@ public class ClientServiceImpl implements ClientService {
      *
      * @param clientDTO the data transfer object containing the client's information
      * @return the saved client information as a DTO
-     * @throws ClientException if the data is invalid or client already exists
      */
     @SneakyThrows
     @Override
     @Transactional
-    public ClientDTO createClient(ClientDTO clientDTO) throws ClientException {
+    public ClientDTO createClient(ClientDTO clientDTO) {
         validateClientData(clientDTO);
 
         if (clientRepository.existsById(clientDTO.getId())) {
@@ -54,7 +52,7 @@ public class ClientServiceImpl implements ClientService {
         addressService.createAddress(addressMapper.toDTO(clientDTO.getAddress()));
 
         Client clientEntity = clientMapper.toEntity(clientDTO);
-        clientEntity.setRole(Role.USER);
+        clientEntity.setRole(Role.USER.toString());
         clientEntity.setAddress(clientDTO.getAddress());
         Client savedClient = clientRepository.save(clientEntity);
         return clientMapper.toDTO(savedClient);
@@ -133,7 +131,7 @@ public class ClientServiceImpl implements ClientService {
     public List<ClientDTO> getAllClients() {
         return clientRepository.findAll().stream()
                 .map(clientMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -148,7 +146,6 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientException(CLIENT_NOT_FOUND_MESSAGE + id));
 
-        // Check if client has an associated address and delete it
         if (client.getAddress() != null) {
             addressService.deleteAddress(client.getAddress().getId());
         }

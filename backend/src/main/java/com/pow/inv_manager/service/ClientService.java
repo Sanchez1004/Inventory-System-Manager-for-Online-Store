@@ -14,9 +14,8 @@ public interface ClientService {
 
     ClientDTO getClient(Long clientId) throws ClientException;
 
-    List<ClientDTO> getAllClients() throws ClientException;
+    List<ClientDTO> getAllClients();
 
-    @SneakyThrows
     @Transactional
     void deleteClientById(Long id);
 }

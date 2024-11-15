@@ -9,6 +9,9 @@ import java.util.Optional;
 
 public interface ItemService {
     @Transactional
+    ItemDTO createItem(ItemDTO itemDTO) throws ItemException;
+
+    @Transactional
     ItemDTO updateItem(Long id, ItemDTO itemDTO) throws ItemException;
 
     @Transactional
@@ -16,6 +19,5 @@ public interface ItemService {
 
     ItemDTO getItemById(Long id) throws ItemException;
 
-    List<ItemDTO> listItems(Optional<String> category, Optional<Long> supplierId,
-                            Optional<Double> minPrice, Optional<Double> maxPrice);
+    List<ItemDTO> listItems();
 }

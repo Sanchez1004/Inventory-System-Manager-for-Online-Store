@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service implementation for managing inventory operations, including adding, updating,
@@ -77,6 +75,16 @@ public class InventoryServiceImpl implements InventoryService {
         return inventoryMapper.toDTO(updatedInventory);
     }
 
+    @Override
+    @Transactional
+    public void reduceInventory(InventoryDTO inventoryDTO) throws InventoryException {
+        if (!inventoryDTO.isActive()) {
+            throw new InventoryException("Item it's not active with id: " + inventoryDTO.getId());
+        }
+        inventoryRepository.save(inventoryMapper.toEntity(inventoryDTO));
+
+    }
+
     /**
      * Marks an inventory item as inactive instead of physically deleting it.
      *
@@ -109,20 +117,15 @@ public class InventoryServiceImpl implements InventoryService {
 
     /**
      * Lists all inventory items with optional filtering by category, supplier ID, and price range.
-     *
-     * @param category   an optional filter for category
-     * @param supplierId an optional filter for supplier ID
-     * @param minPrice   an optional filter for minimum price
-     * @param maxPrice   an optional filter for maximum price
      * @return a list of inventory items as DTOs
      */
     @Override
-    public List<InventoryDTO> getInventory(Optional<String> category, Optional<Long> supplierId,
-                                           Optional<Double> minPrice, Optional<Double> maxPrice) {
-        List<Inventory> inventories = inventoryRepository.findFiltered(category, supplierId, minPrice, maxPrice);
+    public List<InventoryDTO> getInventory() {
+        List<Inventory> inventories = inventoryRepository.findAll();
+
         return inventories.stream()
                 .map(inventoryMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
