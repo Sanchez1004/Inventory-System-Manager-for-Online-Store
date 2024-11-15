@@ -2,6 +2,8 @@ package com.pow.inv_manager.model;
 
 import com.pow.inv_manager.utils.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -18,8 +20,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Admin {
+
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String firstName;
     private String lastName;
     private String email;
@@ -28,6 +33,6 @@ public class Admin {
     private Role role;
 
     @OneToOne
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", unique = true)
     private Address address;
 }

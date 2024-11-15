@@ -2,12 +2,16 @@ package com.pow.inv_manager.service.implementation;
 
 import com.pow.inv_manager.dto.SupplierDTO;
 import com.pow.inv_manager.dto.mapper.SupplierMapper;
+import com.pow.inv_manager.dto.mapper.AddressMapper;
 import com.pow.inv_manager.model.Supplier;
 import com.pow.inv_manager.exception.SupplierException;
 import com.pow.inv_manager.repository.SupplierRepository;
 import com.pow.inv_manager.service.SupplierService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pow.inv_manager.service.AddressService;
+import com.pow.inv_manager.utils.Role;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,21 +21,26 @@ public class SupplierServiceImpl implements SupplierService {
 
     private final SupplierRepository supplierRepository;
     private final SupplierMapper supplierMapper;
+    private final AddressService addressService;
+    private final AddressMapper addressMapper;
 
-    @Autowired
-    public SupplierServiceImpl(SupplierRepository supplierRepository, SupplierMapper supplierMapper) {
+    public SupplierServiceImpl(SupplierRepository supplierRepository, SupplierMapper supplierMapper, AddressService addressService, AddressMapper addressMapper) {
         this.supplierRepository = supplierRepository;
         this.supplierMapper = supplierMapper;
+        this.addressService = addressService;
+        this.addressMapper = addressMapper;
     }
 
     /**
-     * Registers a new supplier.
+     * Registers a new supplier along with an address.
      *
      * @param supplierDTO the data transfer object containing the supplier's information
      * @return the saved supplier information as a DTO
      * @throws SupplierException if the data is invalid or supplier already exists
      */
     @Override
+    @Transactional
+    @SneakyThrows
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws SupplierException {
         validateSupplierData(supplierDTO);
 
@@ -39,16 +48,20 @@ public class SupplierServiceImpl implements SupplierService {
             throw new SupplierException("Supplier already exists with ID: " + supplierDTO.getId());
         }
 
+        // Manage Address creation
+        if (supplierDTO.getAddress() != null) {
+            addressService.createAddress(addressMapper.toDTO(supplierDTO.getAddress()));
+        }
+
         Supplier supplierEntity = supplierMapper.toEntity(supplierDTO);
+        supplierEntity.setRole(Role.SUPPLIER);
+        supplierEntity.setAddress(supplierDTO.getAddress()); // link the address
         Supplier savedSupplier = supplierRepository.save(supplierEntity);
-
-        // TODO: Add role creation logic for supplier user here when implemented Spring Security
-
         return supplierMapper.toDTO(savedSupplier);
     }
 
     /**
-     * Updates an existing supplier profile.
+     * Updates an existing supplier profile, including address if provided.
      *
      * @param id          the ID of the supplier to update
      * @param supplierDTO the data transfer object containing updated supplier information
@@ -56,6 +69,7 @@ public class SupplierServiceImpl implements SupplierService {
      * @throws SupplierException if the supplier does not exist or data is invalid
      */
     @Override
+    @Transactional
     public SupplierDTO updateSupplier(Long id, SupplierDTO supplierDTO) throws SupplierException {
         Supplier existingSupplier = supplierRepository.findById(id)
                 .orElseThrow(() -> new SupplierException("Supplier not found with ID: " + id));
@@ -68,15 +82,13 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     /**
-     * Updates the fields of an existing supplier only if the new values are different.
+     * Updates specific fields of an existing supplier if new values are provided.
      *
      * @param existingSupplier the current supplier entity
      * @param supplierDTO      the data transfer object containing new supplier information
      */
+    @SneakyThrows
     private void updateSupplierFields(Supplier existingSupplier, SupplierDTO supplierDTO) {
-        if (supplierDTO.getId() != null && !supplierDTO.getId().equals(existingSupplier.getId())) {
-            existingSupplier.setId(supplierDTO.getId());
-        }
         if (supplierDTO.getFirstName() != null && !supplierDTO.getFirstName().equals(existingSupplier.getFirstName())) {
             existingSupplier.setFirstName(supplierDTO.getFirstName());
         }
@@ -91,6 +103,7 @@ public class SupplierServiceImpl implements SupplierService {
         }
         if (supplierDTO.getAddress() != null && !supplierDTO.getAddress().equals(existingSupplier.getAddress())) {
             existingSupplier.setAddress(supplierDTO.getAddress());
+            addressService.updateAddress(existingSupplier.getId(), addressMapper.toDTO(existingSupplier.getAddress())); // update address if modified
         }
     }
 
@@ -118,6 +131,23 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.findAll().stream()
                 .map(supplierMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Delete supplier by id
+     * @param id the unique identifier of the supplier
+     *
+     */
+    @Override
+    @SneakyThrows
+    public void deleteSupplierById(Long id) {
+        Supplier supplier = supplierRepository.findById(id).orElseThrow();
+
+        if (supplier.getAddress() != null) {
+            addressService.deleteAddress(supplier.getAddress().getId());
+        }
+
+        supplierRepository.delete(supplier);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.pow.inv_manager.dto;
 
 import com.pow.inv_manager.model.Address;
+import com.pow.inv_manager.utils.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,4 +21,5 @@ public class ClientDTO {
     private String phone;
     private String password;
     private Address address;
+    private Role role;
 }

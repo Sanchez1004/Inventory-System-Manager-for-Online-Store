@@ -8,13 +8,25 @@ import org.springframework.stereotype.Service;
 public class SupplierMapper {
     public SupplierDTO toDTO(Supplier supplier) {
         return SupplierDTO.builder()
-
+                .id(supplier.getId())
+                .role(supplier.getRole())
+                .email(supplier.getEmail())
+                .address(supplier.getAddress())
+                .companyName(supplier.getCompanyName())
+                .lastName(supplier.getLastName())
+                .firstName(supplier.getFirstName())
                 .build();
     }
 
     public Supplier toEntity(SupplierDTO supplierDTO) {
         return Supplier.builder()
-
+                .id(supplierDTO.getId())
+                .role(supplierDTO.getRole())
+                .email(supplierDTO.getEmail())
+                .address(supplierDTO.getAddress())
+                .companyName(supplierDTO.getCompanyName())
+                .lastName(supplierDTO.getLastName())
+                .firstName(supplierDTO.getFirstName())
                 .build();
     }
 }

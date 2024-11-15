@@ -13,4 +13,6 @@ public interface SupplierService {
     SupplierDTO getSupplierById(Long id) throws SupplierException;
 
     List<SupplierDTO> getAllSuppliers();
+
+    void deleteSupplierById(Long id);
 }

@@ -1,5 +1,6 @@
 package com.pow.inv_manager.dto;
 
+import com.pow.inv_manager.model.Address;
 import com.pow.inv_manager.utils.Role;
 import lombok.*;
 
@@ -16,4 +17,5 @@ public class AdminDTO {
     private String password;
     private String username;
     private Role role;
+    private Address address;
 }

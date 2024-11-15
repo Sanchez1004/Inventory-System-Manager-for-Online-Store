@@ -1,6 +1,7 @@
 package com.pow.inv_manager.dto;
 
 import com.pow.inv_manager.model.Address;
+import com.pow.inv_manager.utils.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,4 +20,5 @@ public class SupplierDTO {
     private String companyName;
     private String email;
     private Address address;
+    private Role role;
 }

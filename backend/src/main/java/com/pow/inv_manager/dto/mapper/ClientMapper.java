@@ -15,6 +15,7 @@ public class ClientMapper {
                 .firstName(client.getFirstName())
                 .lastName(client.getLastName())
                 .password(client.getPassword())
+                .role(client.getRole())
                 .build();
     }
 
@@ -27,6 +28,7 @@ public class ClientMapper {
                 .firstName(clientDTO.getFirstName())
                 .lastName(clientDTO.getLastName())
                 .password(clientDTO.getPassword())
+                .role(clientDTO.getRole())
                 .build();
     }
 }

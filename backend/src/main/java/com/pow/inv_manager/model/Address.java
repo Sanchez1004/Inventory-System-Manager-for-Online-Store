@@ -1,6 +1,8 @@
 package com.pow.inv_manager.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -16,8 +18,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String city;
     private String country;
     private String street;
