@@ -49,14 +49,8 @@ public class AdminServiceImpl implements AdminService {
             throw new AdminException("Admin already exists with ID: " + adminDTO.getId());
         }
 
-        // If address is provided, create it
-        if (adminDTO.getAddress() != null) {
-            addressService.createAddress(addressMapper.toDTO(adminDTO.getAddress()));
-        }
-
         Admin adminEntity = adminMapper.toEntity(adminDTO);
         adminEntity.setRole(Role.ADMIN.toString());
-        adminEntity.setAddress(adminDTO.getAddress()); // Associate address
         Admin savedAdmin = adminRepository.save(adminEntity);
         return adminMapper.toDTO(savedAdmin);
     }
@@ -102,10 +96,6 @@ public class AdminServiceImpl implements AdminService {
         if (adminDTO.getPassword() != null && !adminDTO.getPassword().equals(existingAdmin.getPassword())) {
             existingAdmin.setPassword(adminDTO.getPassword());
         }
-        if (adminDTO.getAddress() != null && !adminDTO.getAddress().equals(existingAdmin.getAddress())) {
-            existingAdmin.setAddress(adminDTO.getAddress());
-            addressService.updateAddress(existingAdmin.getId(), addressMapper.toDTO(existingAdmin.getAddress())); // Update address if modified
-        }
     }
 
     /**
@@ -145,11 +135,6 @@ public class AdminServiceImpl implements AdminService {
     public void deleteAdminById(Long id) {
         Admin admin = adminRepository.findById(id)
                 .orElseThrow(() -> new AdminException(ADMIN_NOT_FOUND_MESSAGE + id));
-
-        // Check if admin has an associated address and delete it
-        if (admin.getAddress() != null) {
-            addressService.deleteAddress(admin.getAddress().getId());
-        }
 
         adminRepository.delete(admin);
     }

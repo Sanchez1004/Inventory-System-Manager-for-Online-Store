@@ -21,3 +21,5 @@ spring:
     port: ${RABBITMQ_PORT}
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
+
+jwtKey: ${JWT_SECRET_KEY}
