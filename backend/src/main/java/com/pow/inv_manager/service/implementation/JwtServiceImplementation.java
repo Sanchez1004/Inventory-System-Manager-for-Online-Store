@@ -91,15 +91,15 @@ public class JwtServiceImplementation implements JwtService {
      * Generates a JWT token with additional claims for the given user entity.
      *
      * @param extraClaims additional claims to include in the token
-     * @param user        the user entity for which to generate the token
+     * @param admin        the admin entity for which to generate the token
      * @return the JWT token with the specified claims
      */
-    private String getToken(Map<String, Object> extraClaims, Admin user) {
+    private String getToken(Map<String, Object> extraClaims, Admin admin) {
         return builder()
                 .claims(extraClaims)
-                .claim("userId", user.getId())
-                .claim("ROLE", user.getRole())
-                .subject(user.getUsername())
+                .claim("userId", admin.getId())
+                .claim("ROLE", admin.getRole())
+                .subject(admin.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
                 .signWith(getKey())

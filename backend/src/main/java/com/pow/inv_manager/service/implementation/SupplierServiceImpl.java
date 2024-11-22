@@ -18,6 +18,9 @@ import java.util.List;
 @Service
 public class SupplierServiceImpl implements SupplierService {
 
+    private static final String SUPPLIER_NOT_FOUND_MESSAGE = "Supplier not found with ID: ";
+
+
     private final SupplierRepository supplierRepository;
     private final SupplierMapper supplierMapper;
     private final AddressService addressService;
@@ -42,8 +45,8 @@ public class SupplierServiceImpl implements SupplierService {
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
         validateSupplierData(supplierDTO);
 
-        if (supplierRepository.existsById(supplierDTO.getId())) {
-            throw new SupplierException("Supplier already exists with ID: " + supplierDTO.getId());
+        if (supplierRepository.existsByEmail(supplierDTO.getEmail())) {
+            throw new SupplierException("Supplier already exists with email: " + supplierDTO.getEmail());
         }
 
         // Manage Address creation
@@ -53,7 +56,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         Supplier supplierEntity = supplierMapper.toEntity(supplierDTO);
         supplierEntity.setRole(Role.SUPPLIER.toString());
-        supplierEntity.setAddress(supplierDTO.getAddress()); // link the address
+        supplierEntity.setAddress(supplierDTO.getAddress());
         Supplier savedSupplier = supplierRepository.save(supplierEntity);
         return supplierMapper.toDTO(savedSupplier);
     }
@@ -70,7 +73,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Transactional
     public SupplierDTO updateSupplier(Long id, SupplierDTO supplierDTO) throws SupplierException {
         Supplier existingSupplier = supplierRepository.findById(id)
-                .orElseThrow(() -> new SupplierException("Supplier not found with ID: " + id));
+                .orElseThrow(() -> new SupplierException(SUPPLIER_NOT_FOUND_MESSAGE + id));
 
         validateSupplierData(supplierDTO);
         updateSupplierFields(existingSupplier, supplierDTO);
@@ -101,7 +104,7 @@ public class SupplierServiceImpl implements SupplierService {
         }
         if (supplierDTO.getAddress() != null && !supplierDTO.getAddress().equals(existingSupplier.getAddress())) {
             existingSupplier.setAddress(supplierDTO.getAddress());
-            addressService.updateAddress(existingSupplier.getId(), addressMapper.toDTO(existingSupplier.getAddress())); // update address if modified
+            addressService.updateAddress(existingSupplier.getAddress().getId(), addressMapper.toDTO(existingSupplier.getAddress())); // update address if modified
         }
     }
 
@@ -139,11 +142,8 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @SneakyThrows
     public void deleteSupplierById(Long id) {
-        Supplier supplier = supplierRepository.findById(id).orElseThrow();
-
-        if (supplier.getAddress() != null) {
-            addressService.deleteAddress(supplier.getAddress().getId());
-        }
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new SupplierException((SUPPLIER_NOT_FOUND_MESSAGE)));
 
         supplierRepository.delete(supplier);
     }

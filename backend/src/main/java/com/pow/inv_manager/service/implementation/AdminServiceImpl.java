@@ -1,15 +1,19 @@
 package com.pow.inv_manager.service.implementation;
 
 import com.pow.inv_manager.dto.AdminDTO;
+import com.pow.inv_manager.dto.AuthResponse;
+import com.pow.inv_manager.dto.LoginRequest;
 import com.pow.inv_manager.dto.mapper.AdminMapper;
-import com.pow.inv_manager.dto.mapper.AddressMapper;
 import com.pow.inv_manager.exception.AdminException;
 import com.pow.inv_manager.model.Admin;
 import com.pow.inv_manager.repository.AdminRepository;
-import com.pow.inv_manager.service.AddressService;
 import com.pow.inv_manager.service.AdminService;
+import com.pow.inv_manager.service.JwtService;
 import com.pow.inv_manager.utils.Role;
 import lombok.SneakyThrows;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,14 +26,58 @@ public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
     private final AdminMapper adminMapper;
-    private final AddressService addressService;
-    private final AddressMapper addressMapper;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AdminServiceImpl(AdminRepository adminRepository, AdminMapper adminMapper, AddressService addressService, AddressMapper addressMapper) {
+    public AdminServiceImpl(AdminRepository adminRepository, AdminMapper adminMapper, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.adminRepository = adminRepository;
         this.adminMapper = adminMapper;
-        this.addressService = addressService;
-        this.addressMapper = addressMapper;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+    }
+
+    @SneakyThrows
+    @Override
+    public AuthResponse login(LoginRequest loginRequest) {
+        Admin admin = adminRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new AdminException("Admin not found with email: " + loginRequest.getEmail()));
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
+        String token = jwtService.getToken(admin);
+        return AuthResponse.builder()
+                .token(token)
+                .email(admin.getEmail())
+                .firstName(admin.getFirstName())
+                .lastName(admin.getLastName())
+                .build();
+    }
+
+    @SneakyThrows
+    @Override
+    public AuthResponse register(AdminDTO adminDTO) {
+        if (adminRepository.existsByEmail(adminDTO.getEmail())) {
+            throw new AdminException("Email it's already in use");
+        }
+
+        Admin admin = Admin.builder()
+                .email(adminDTO.getEmail())
+                .password(passwordEncoder.encode(adminDTO.getPassword()))
+                .firstName(adminDTO.getFirstName())
+                .lastName(adminDTO.getLastName())
+                .role(Role.ADMIN.toString())
+                .build();
+
+        adminRepository.save(admin);
+
+        return AuthResponse.builder()
+                .token(jwtService.getToken(admin))
+                .email(admin.getEmail())
+                .firstName(admin.getFirstName())
+                .lastName(admin.getLastName())
+                .build();
     }
 
     /**

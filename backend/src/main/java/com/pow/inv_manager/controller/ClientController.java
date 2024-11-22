@@ -5,6 +5,7 @@ import com.pow.inv_manager.exception.ClientException;
 import com.pow.inv_manager.service.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -81,7 +82,11 @@ public class ClientController {
      */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
-        clientService.deleteClientById(id);
-        return ResponseEntity.noContent().build();
+        try {
+            clientService.deleteClientById(id);
+            return ResponseEntity.noContent().build();
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

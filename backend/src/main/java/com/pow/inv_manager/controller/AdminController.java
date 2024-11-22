@@ -1,6 +1,8 @@
 package com.pow.inv_manager.controller;
 
 import com.pow.inv_manager.dto.AdminDTO;
+import com.pow.inv_manager.dto.AuthResponse;
+import com.pow.inv_manager.dto.LoginRequest;
 import com.pow.inv_manager.exception.AdminException;
 import com.pow.inv_manager.service.AdminService;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,28 @@ public class AdminController {
 
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
+    }
+
+    /**
+     * Endpoint to create a new admin.
+     * @param loginRequest the admin data to be logged in
+     * @return ResponseEntity containing the login credentials
+     */
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
+        AuthResponse credentials = adminService.login(loginRequest);
+        return ResponseEntity.ok(credentials);
+    }
+
+    /**
+     * Endpoint to create a new admin.
+     * @param adminDTO the admin data to be registered
+     * @return ResponseEntity containing the login credentials
+     */
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@RequestBody AdminDTO adminDTO) {
+        AuthResponse credentials = adminService.register(adminDTO);
+        return ResponseEntity.ok(credentials);
     }
 
     /**

@@ -104,7 +104,7 @@ public class ClientServiceImpl implements ClientService {
         }
         if (clientDTO.getAddress() != null && !clientDTO.getAddress().equals(existingClient.getAddress())) {
             existingClient.setAddress(clientDTO.getAddress());
-            addressService.updateAddress(existingClient.getId(), addressMapper.toDTO(existingClient.getAddress()));
+            addressService.updateAddress(existingClient.getAddress().getId(), addressMapper.toDTO(existingClient.getAddress()));
         }
     }
 
@@ -145,10 +145,6 @@ public class ClientServiceImpl implements ClientService {
     public void deleteClientById(Long id) {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientException(CLIENT_NOT_FOUND_MESSAGE + id));
-
-        if (client.getAddress() != null) {
-            addressService.deleteAddress(client.getAddress().getId());
-        }
 
         clientRepository.delete(client);
     }
