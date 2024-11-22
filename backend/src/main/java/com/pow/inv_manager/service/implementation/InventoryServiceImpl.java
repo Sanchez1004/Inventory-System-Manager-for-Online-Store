@@ -44,7 +44,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @Transactional
     public InventoryDTO addInventory(InventoryDTO inventoryDTO) throws InventoryException {
-        if (!inventoryDTO.isActive()) {
+        if (Boolean.FALSE.equals(inventoryDTO.getIsActive())) {
             throw new InventoryException("Item is inactive");
         }
 
@@ -65,8 +65,6 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @Transactional
     public InventoryDTO updateInventory(Long id, InventoryDTO inventoryDTO) throws InventoryException {
-        validateInventoryData(inventoryDTO);
-
         Inventory existingInventory = inventoryRepository.findById(id)
                 .orElseThrow(() -> new InventoryException(INVENTORY_NOT_FOUND_MESSAGE + id));
 
@@ -78,7 +76,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @Transactional
     public void reduceInventory(InventoryDTO inventoryDTO) throws InventoryException {
-        if (!inventoryDTO.isActive()) {
+        if (Boolean.FALSE.equals(inventoryDTO.getIsActive())) {
             throw new InventoryException("Item it's not active with id: " + inventoryDTO.getId());
         }
         inventoryRepository.save(inventoryMapper.toEntity(inventoryDTO));
@@ -97,7 +95,7 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory existingInventory = inventoryRepository.findById(id)
                 .orElseThrow(() -> new InventoryException(INVENTORY_NOT_FOUND_MESSAGE + id));
 
-        existingInventory.setActive(false);  // Set to inactive
+        existingInventory.setIsActive(false);  // Set to inactive
         inventoryRepository.save(existingInventory);
     }
 
@@ -138,9 +136,6 @@ public class InventoryServiceImpl implements InventoryService {
         if (inventoryDTO.getQuantity() < 0) {
             throw new InventoryException("Quantity cannot be negative.");
         }
-        if (inventoryDTO.getPrice() <= 0) {
-            throw new InventoryException("Price must be greater than zero.");
-        }
         if (inventoryDTO.getLocation() == null || inventoryDTO.getLocation().isEmpty()) {
             throw new InventoryException("Location is required.");
         }
@@ -159,11 +154,11 @@ public class InventoryServiceImpl implements InventoryService {
         if (inventoryDTO.getQuantity() >= 0 && inventoryDTO.getQuantity() != existingInventory.getQuantity()) {
             existingInventory.setQuantity(inventoryDTO.getQuantity());
         }
-        if (inventoryDTO.getPrice() > 0 && inventoryDTO.getPrice() != existingInventory.getPrice()) {
-            existingInventory.setPrice(inventoryDTO.getPrice());
-        }
         if (inventoryDTO.getLocation() != null && !inventoryDTO.getLocation().equals(existingInventory.getLocation())) {
             existingInventory.setLocation(inventoryDTO.getLocation());
+        }
+        if (inventoryDTO.getIsActive() != null && !inventoryDTO.getIsActive().equals(existingInventory.getIsActive())) {
+            existingInventory.setIsActive(inventoryDTO.getIsActive());
         }
     }
 }

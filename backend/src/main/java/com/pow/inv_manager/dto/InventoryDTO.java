@@ -16,7 +16,6 @@ public class InventoryDTO {
     private Long id;
     private Item item;
     private int quantity;
-    private double price;
     private String location;
-    private boolean isActive;
+    private Boolean isActive;
 }

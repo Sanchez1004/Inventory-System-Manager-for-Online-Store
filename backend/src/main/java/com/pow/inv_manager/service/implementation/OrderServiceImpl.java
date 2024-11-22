@@ -199,11 +199,11 @@ public class OrderServiceImpl implements OrderService {
             ItemDTO item = itemService.getItemById(orderItem.getInventory().getItem().getId());
             InventoryDTO inventory = inventoryService.getInventoryById(item.getId());
 
-            if (inventory.getQuantity() < orderItem.getQuantity()) {
+            if (inventory.getQuantity() < orderItem.getQuantity() && !orderItem.getInventory().getIsActive()) {
                 throw new OrderException("Not enough stock for item: " + item.getName());
             }
 
-            orderItem.setUnitPrice(inventory.getPrice());
+            orderItem.setUnitPrice(inventory.getItem().getPrice());
         }
     }
 }

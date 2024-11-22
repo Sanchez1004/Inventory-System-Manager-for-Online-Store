@@ -11,6 +11,9 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 import Clients from './pages/Clients'
 import Suppliers from './pages/Suppliers.tsx';
 import CheckDefaultRoute from './utils/CheckDefaultRoute.tsx';
+import Inventory from './pages/Inventory.tsx';
+import Items from './pages/Items.tsx';
+import Orders from './pages/Orders.tsx';
 
 function App() {
     const [loading, setLoading] = useState<boolean>(true);
@@ -47,6 +50,33 @@ function App() {
                         </>
                     }
                 />
+              <Route
+                path="/Inventory"
+                element={
+                  <>
+                    <PageTitle title="inventory" />
+                    <Inventory />
+                  </>
+                }
+              />
+              <Route
+                path="/items"
+                element={
+                  <>
+                    <PageTitle title="Inventory" />
+                    <Items />
+                  </>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <>
+                    <PageTitle title="Orders" />
+                    <Orders />
+                  </>
+                }
+              />
                 <Route
                     path="/clients"
                     element={

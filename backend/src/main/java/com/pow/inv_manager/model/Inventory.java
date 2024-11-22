@@ -28,8 +28,7 @@ public class Inventory {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private int quantity;
-    private double price;
+    private int quantity;   
     private String location;
-    private boolean isActive;
+    private Boolean isActive;
 }

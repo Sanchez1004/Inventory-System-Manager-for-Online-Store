@@ -125,22 +125,22 @@ const TableSuppliers: React.FC = () => {
               {supplier.firstName} {supplier.lastName}
             </p>
           </div>
-          <div className="col-span-3 flex items-center">
+          <div className="col-span-3 flex items-center place-content-center">
             <p className="text-sm text-black dark:text-white">
               {supplier.email}
             </p>
           </div>
-          <div className="col-span-2 flex items-center">
+          <div className="col-span-2 flex items-center place-content-center">
             <p className="text-sm text-black dark:text-white">
               {supplier.companyName}
             </p>
           </div>
-          <div className="col-span-3 flex items-center">
-            <p className="text-sm text-black dark:text-white">
+          <div className="col-span-3 flex items-center place-content-center text-wrap">
+            <p className="text-sm text-black dark:text-white text-center">
               {supplier.address?.country}, {supplier.address?.city}, {supplier.address?.street}
             </p>
           </div>
-          <div className="flex items-center space-x-3.5">
+          <div className="flex items-center space-x-3.5 place-content-center">
             <button
               className="hover:text-primary"
               title="Edit Supplier"
@@ -245,16 +245,16 @@ const TableSuppliers: React.FC = () => {
         <div className="col-span-2 flex items-center">
           <p className="font-medium">Client Name</p>
         </div>
-        <div className="col-span-3 flex items-center">
+        <div className="col-span-3 flex items-center place-content-center">
           <p className="font-medium">Email</p>
         </div>
-        <div className="col-span-2 flex items-center">
+        <div className="col-span-2 flex items-center place-content-center">
           <p className="font-medium">Company</p>
         </div>
         <div className="col-span-3 flex items-center place-content-center">
           <p className="font-medium">Address</p>
         </div>
-        <div className="col-span-1 flex items-center">
+        <div className="col-span-1 flex items-center place-content-center">
           <p className="font-medium">Actions</p>
         </div>
       </div>

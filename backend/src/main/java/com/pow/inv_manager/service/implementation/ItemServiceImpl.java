@@ -3,7 +3,9 @@ package com.pow.inv_manager.service.implementation;
 import com.pow.inv_manager.dto.ItemDTO;
 import com.pow.inv_manager.dto.mapper.ItemMapper;
 import com.pow.inv_manager.exception.ItemException;
+import com.pow.inv_manager.model.Inventory;
 import com.pow.inv_manager.model.Item;
+import com.pow.inv_manager.repository.InventoryRepository;
 import com.pow.inv_manager.repository.ItemRepository;
 import com.pow.inv_manager.service.ItemService;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,12 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
+    private final InventoryRepository inventoryRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper, InventoryRepository inventoryRepository) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
+        this.inventoryRepository = inventoryRepository;
     }
 
     @Transactional
@@ -31,6 +35,14 @@ public class ItemServiceImpl implements ItemService {
 
         Item item = itemMapper.toEntity(itemDTO);
         Item savedItem = itemRepository.save(item);
+
+        Inventory inventory = Inventory.builder()
+                .item(savedItem)
+                .quantity(0)
+                .location("")
+                .isActive(false)
+                .build();
+        inventoryRepository.save(inventory);
         return itemMapper.toDTO(savedItem);
     }
 
@@ -83,6 +95,15 @@ public class ItemServiceImpl implements ItemService {
         }
         if (itemDTO.getDescription() != null && !itemDTO.getDescription().equals(existingItem.getDescription())) {
             existingItem.setDescription(itemDTO.getDescription());
+        }
+        if (itemDTO.getCategory() != null && !itemDTO.getCategory().equals(existingItem.getCategory())) {
+            existingItem.setCategory(itemDTO.getCategory());
+        }
+        if (itemDTO.getPrice() > 0 && itemDTO.getPrice() == existingItem.getPrice()) {
+            existingItem.setPrice(itemDTO.getPrice());
+        }
+        if (itemDTO.getPhoto() != null && !itemDTO.getPhoto().equals(existingItem.getPhoto())) {
+            existingItem.setPhoto(itemDTO.getPhoto());
         }
     }
 }

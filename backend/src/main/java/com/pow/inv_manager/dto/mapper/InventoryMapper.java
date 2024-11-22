@@ -10,10 +10,9 @@ public class InventoryMapper {
     public Inventory toEntity(InventoryDTO inventoryDTO) {
         return Inventory.builder()
                 .id(inventoryDTO.getId())
-                .isActive(inventoryDTO.isActive())
+                .isActive(inventoryDTO.getIsActive())
                 .item(inventoryDTO.getItem())
                 .location(inventoryDTO.getLocation())
-                .price(inventoryDTO.getPrice())
                 .quantity(inventoryDTO.getQuantity())
                 .build();
     }
@@ -21,10 +20,9 @@ public class InventoryMapper {
     public InventoryDTO toDTO(Inventory inventory) {
         return InventoryDTO.builder()
                 .id(inventory.getId())
-                .isActive(inventory.isActive())
+                .isActive(inventory.getIsActive())
                 .item(inventory.getItem())
                 .location(inventory.getLocation())
-                .price(inventory.getPrice())
                 .quantity(inventory.getQuantity())
                 .build();
     }

@@ -116,29 +116,29 @@ const TableClients: React.FC = () => {
     if (filteredClients.length > 0) {
       return filteredClients.map((client) => (
         <div
-          className="grid grid-cols-11 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-11 md:px-6 2xl:px-7.5"
+          className="grid grid-cols-12 items-center border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-12 md:px-6 2xl:px-7.5"
           key={client.id}
         >
-          <div className="col-span-1 flex items-center">
+          <div className="col-span-1 flex">
             <p className="text-sm text-black dark:text-white">{client.id}</p>
           </div>
-          <div className="col-span-2 flex items-center">
+          <div className="col-span-2 flex">
             <p className="text-sm text-black dark:text-white">
               {client.firstName} {client.lastName}
             </p>
           </div>
-          <div className="col-span-3 flex items-center">
-            <p className="text-sm text-black dark:text-white">{client.email}</p>
+          <div className="col-span-3 flex">
+            <p className="text-sm text-black dark:text-white place-content-center">{client.email}</p>
           </div>
-          <div className="col-span-1 flex items-center">
+          <div className="col-span-2 flex place-content-center">
             <p className="text-sm text-black dark:text-white">{client.phone}</p>
           </div>
-          <div className="col-span-3 flex items-center">
-            <p className="text-sm text-black dark:text-white">
+          <div className="col-span-3 flex place-content-center text-wrap">
+            <p className="text-sm text-black dark:text-white text-center text-wrap">
               {client.address?.country}, {client.address?.city}, {client.address?.street}
             </p>
           </div>
-          <div className="cols-span-1 flex items-center space-x-3.5">
+          <div className="cols-span-1 flex place-content-center space-x-3.5">
             <button
               className="hover:text-primary"
               title="Edit Client"
@@ -334,30 +334,30 @@ const TableClients: React.FC = () => {
           className="ml-4 border rounded-2xl py-1 px-3 dark:text-white dark:bg-black"
         />
       </div>
-      <div className="grid grid-cols-11 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-11 md:px-6 2xl:px-7.5">
-        <div className="col-span-1 flex items-center">
+      <div className="grid grid-cols-12 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-12 md:px-6 2xl:px-7.5">
+        <div className="col-span-1 flex">
           <p className="font-medium">ID</p>
         </div>
         <div className="col-span-2 flex items-center">
           <p className="font-medium">Client Name</p>
         </div>
-        <div className="col-span-3 flex items-center">
+        <div className="col-span-3 flex items-center place-content-center">
           <p className="font-medium">Email</p>
         </div>
-        <div className="col-span-1 flex items-center">
+        <div className="col-span-2 flex items-center place-content-center">
           <p className="font-medium">Phone</p>
         </div>
         <div className="col-span-3 flex items-center place-content-center">
           <p className="font-medium">Address</p>
         </div>
-        <div className="col-span-1 flex items-center">
+        <div className="col-span-1 flex items-center place-content-center">
           <p className="font-medium">Actions</p>
         </div>
       </div>
       {renderClientData()}
       {renderEditForm()}
       {isConfirming && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-99999">
           <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full text-center">
             <h3 className="text-xl font-medium text-black mb-4">
               Confirm Save

@@ -12,6 +12,8 @@ public class ItemMapper {
                 .name(itemDTO.getName())
                 .description(itemDTO.getDescription())
                 .category(itemDTO.getCategory())
+                .price(itemDTO.getPrice())
+                .photo(itemDTO.getPhoto())
                 .build();
     }
 
@@ -21,6 +23,8 @@ public class ItemMapper {
                 .description(item.getDescription())
                 .name(item.getName())
                 .category(item.getCategory())
+                .price(item.getPrice())
+                .photo(item.getPhoto())
                 .build();
     }
 }
