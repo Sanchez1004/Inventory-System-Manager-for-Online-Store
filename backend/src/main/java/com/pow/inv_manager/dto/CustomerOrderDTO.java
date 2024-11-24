@@ -1,8 +1,5 @@
 package com.pow.inv_manager.dto;
 
-import com.pow.inv_manager.model.Client;
-import com.pow.inv_manager.model.OrderItem;
-import com.pow.inv_manager.utils.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,9 +16,16 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomerOrderDTO {
     private Long id;
-    private Client client;
+    private Long clientId;
+    private String clientCountry;
+    private String clientCity;
+    private String clientStreet;
+    private String clientPhone;
+    private String clientEmail;
+    private String clientFirstName;
+    private String clientLastName;
     private Date orderDate;
-    private OrderStatus status;
-    private List<OrderItem> orderItems;
+    private String status;
+    private List<OrderItemDTO> orderItems;
     private double totalAmount;
 }

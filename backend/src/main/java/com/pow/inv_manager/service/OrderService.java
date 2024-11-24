@@ -26,5 +26,8 @@ public interface OrderService {
     void deleteOrder(Long orderId) throws OrderException;
 
     @Transactional
+    void deleteOrderByClientId(Long clientId);
+
+    @Transactional
     void confirmOrder(Long orderId) throws OrderException;
 }

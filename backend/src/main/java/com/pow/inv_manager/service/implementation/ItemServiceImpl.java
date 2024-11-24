@@ -5,13 +5,16 @@ import com.pow.inv_manager.dto.mapper.ItemMapper;
 import com.pow.inv_manager.exception.ItemException;
 import com.pow.inv_manager.model.Inventory;
 import com.pow.inv_manager.model.Item;
+import com.pow.inv_manager.model.OrderItem;
 import com.pow.inv_manager.repository.InventoryRepository;
 import com.pow.inv_manager.repository.ItemRepository;
+import com.pow.inv_manager.repository.OrderItemRepository;
 import com.pow.inv_manager.service.ItemService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -21,11 +24,13 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
     private final InventoryRepository inventoryRepository;
+    private final OrderItemRepository orderItemRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper, InventoryRepository inventoryRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper, InventoryRepository inventoryRepository, OrderItemRepository orderItemRepository) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
         this.inventoryRepository = inventoryRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     @Transactional
@@ -65,7 +70,16 @@ public class ItemServiceImpl implements ItemService {
         Item existingItem = itemRepository.findById(id)
                 .orElseThrow(() -> new ItemException(ITEM_NOT_FOUND_MESSAGE + id));
 
-        itemRepository.save(existingItem);
+        Optional<Inventory> existingInventory = inventoryRepository.findById(id);
+        OrderItem orderItem = orderItemRepository.findByInventory_Id(id);
+
+        if (orderItem != null) {
+            orderItemRepository.delete(orderItem);
+        }
+        
+        existingInventory.ifPresent(inventoryRepository::delete);
+
+        itemRepository.delete(existingItem);
     }
 
     @Override

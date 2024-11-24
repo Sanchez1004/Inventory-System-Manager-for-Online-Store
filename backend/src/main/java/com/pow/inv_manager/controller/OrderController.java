@@ -2,6 +2,7 @@ package com.pow.inv_manager.controller;
 
 import com.pow.inv_manager.dto.CustomerOrderDTO;
 import com.pow.inv_manager.exception.OrderException;
+import com.pow.inv_manager.rabbitmq.MessagePublisherService;
 import com.pow.inv_manager.service.OrderService;
 import com.pow.inv_manager.utils.OrderStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,11 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final MessagePublisherService publisherService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, MessagePublisherService publisherService) {
         this.orderService = orderService;
+        this.publisherService = publisherService;
     }
 
     /**
@@ -25,13 +28,9 @@ public class OrderController {
      * @return ResponseEntity containing the created order
      */
     @PostMapping("/create")
-    public ResponseEntity<CustomerOrderDTO> createOrder(@RequestBody CustomerOrderDTO customerOrderDTO) {
-        try {
-            CustomerOrderDTO createdOrder = orderService.createOrder(customerOrderDTO);
-            return ResponseEntity.ok(createdOrder);
-        } catch (OrderException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<String> createOrder(@RequestBody CustomerOrderDTO customerOrderDTO) {
+        publisherService.sendOrderToQueue(customerOrderDTO);
+        return ResponseEntity.ok("Order successfully sent to de queue");
     }
 
     /**

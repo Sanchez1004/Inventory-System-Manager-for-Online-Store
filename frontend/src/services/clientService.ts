@@ -6,10 +6,6 @@ export const getAllClients = async (): Promise<Client[]> => {
     return response.data;
 };
 
-export const getClientById = async (id: number): Promise<Client> => {
-    const response = await axios.get(`/api/clients/${id}`);
-    return response.data;
-};
 
 export const updateClient = async (id: number, updatedClient: Client): Promise<Client> => {
     const response = await axios.put(`/api/clients/update/${id.toString()}`, updatedClient);

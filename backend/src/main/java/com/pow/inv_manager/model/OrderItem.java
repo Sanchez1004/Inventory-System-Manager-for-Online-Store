@@ -1,5 +1,6 @@
 package com.pow.inv_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +13,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Getter
@@ -27,10 +30,12 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private CustomerOrder customerOrder;
 
     @ManyToOne
     @JoinColumn(name = "inventory_id")
+    @Cascade(CascadeType.ALL)
     private Inventory inventory;
 
     private int quantity;

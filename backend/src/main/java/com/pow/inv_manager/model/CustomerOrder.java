@@ -1,8 +1,9 @@
 package com.pow.inv_manager.model;
 
-import com.pow.inv_manager.utils.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,9 +40,10 @@ public class CustomerOrder {
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
-    private OrderStatus status;
+    private String status;
 
     @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<OrderItem> orderItems;
 
     private double totalAmount;

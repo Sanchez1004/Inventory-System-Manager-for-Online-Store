@@ -8,6 +8,7 @@ import com.pow.inv_manager.model.Client;
 import com.pow.inv_manager.repository.ClientRepository;
 import com.pow.inv_manager.service.AddressService;
 import com.pow.inv_manager.service.ClientService;
+import com.pow.inv_manager.service.OrderService;
 import com.pow.inv_manager.utils.Role;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,14 @@ public class ClientServiceImpl implements ClientService {
     private final ClientMapper clientMapper;
     private final AddressService addressService;
     private final AddressMapper addressMapper;
+    private final OrderService orderService;
 
-    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, AddressService addressService, AddressMapper addressMapper) {
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, AddressService addressService, AddressMapper addressMapper, OrderService orderService) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
         this.addressService = addressService;
         this.addressMapper = addressMapper;
+        this.orderService = orderService;
     }
 
     /**
@@ -146,6 +149,7 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientException(CLIENT_NOT_FOUND_MESSAGE + id));
 
+        orderService.deleteOrderByClientId(id);
         clientRepository.delete(client);
     }
 

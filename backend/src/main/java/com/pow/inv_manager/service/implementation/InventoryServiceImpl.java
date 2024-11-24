@@ -95,8 +95,8 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory existingInventory = inventoryRepository.findById(id)
                 .orElseThrow(() -> new InventoryException(INVENTORY_NOT_FOUND_MESSAGE + id));
 
-        existingInventory.setIsActive(false);  // Set to inactive
-        inventoryRepository.save(existingInventory);
+        existingInventory.setIsActive(false);
+        inventoryRepository.delete(existingInventory);
     }
 
     /**

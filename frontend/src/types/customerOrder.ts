@@ -1,12 +1,17 @@
-import { Client } from "./client";
 import { OrderItem } from "./orderItem.ts";
-import { OrderStatus } from "./orderStatus";
 
 export type CustomerOrder = {
   id: number;
-  client: Client;
+  clientId: string;
+  clientCountry: string;
+  clientCity: string;
+  clientStreet: string;
+  clientPhone: string;
+  clientEmail: string;
+  clientFirstName: string;
+  clientLastName: string;
   orderDate: string;
-  status: OrderStatus;
+  status: string;
   orderItems: OrderItem[];
   totalAmount: number;
 };

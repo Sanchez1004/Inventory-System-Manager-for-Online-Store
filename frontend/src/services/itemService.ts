@@ -23,16 +23,6 @@ export const updateItem = async (id: number, updatedItem: Item): Promise<Item> =
 };
 
 /**
- * Retrieve an item by its ID.
- * @param id - The ID of the item to retrieve.
- * @returns A promise resolving to the item data.
- */
-export const getItemById = async (id: number): Promise<Item> => {
-  const response = await axios.get(`/api/items/${id}`);
-  return response.data;
-};
-
-/**
  * List all items.
  * @returns A promise resolving to a list of all items.
  */

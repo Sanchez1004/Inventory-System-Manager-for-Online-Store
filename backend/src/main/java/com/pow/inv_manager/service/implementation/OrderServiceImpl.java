@@ -4,6 +4,7 @@ import com.pow.inv_manager.dto.CustomerOrderDTO;
 import com.pow.inv_manager.dto.InventoryDTO;
 import com.pow.inv_manager.dto.ItemDTO;
 import com.pow.inv_manager.dto.mapper.CustomerOrderMapper;
+import com.pow.inv_manager.dto.mapper.OrderItemMapper;
 import com.pow.inv_manager.exception.OrderException;
 import com.pow.inv_manager.model.CustomerOrder;
 import com.pow.inv_manager.model.OrderItem;
@@ -25,21 +26,21 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final CustomerOrderMapper customerOrderMapper;
+    private final OrderItemMapper orderItemMapper;
     private final CustomerOrderRepository customerOrderRepository;
     private final InventoryService inventoryService;
     private final ItemService itemService;
 
-    /**
-     * Creates a new customer order based on the provided order DTO.
-     *
-     * @param customerOrderDTO The customer order details.
-     * @return The created customer order DTO.
-     */
     @Override
     @Transactional
     public CustomerOrderDTO createOrder(CustomerOrderDTO customerOrderDTO) {
-        validateOrderItems(customerOrderDTO);
+        List<OrderItem> orderItems = customerOrderDTO.getOrderItems().stream()
+                .map(orderItemMapper::toEntity)
+                .toList();
+
         CustomerOrder customerOrder = customerOrderMapper.toEntity(customerOrderDTO);
+        customerOrder.setOrderItems(orderItems);
+
         customerOrder.calculateTotalAmount();
 
         return customerOrderMapper.toDTO(customerOrderRepository.save(customerOrder));
@@ -59,12 +60,14 @@ public class OrderServiceImpl implements OrderService {
         CustomerOrder existingOrder = getOrderEntity(orderId);
 
         // Check if the client is the same
-        if (!existingOrder.getClient().equals(customerOrderDTO.getClient())) {
+        if (!existingOrder.getClient().getId().equals(customerOrderDTO.getClientId())) {
             throw new OrderException("Cannot change the client of an existing order.");
         }
 
         validateOrderItems(customerOrderDTO);
-        List<OrderItem> updatedItems = customerOrderDTO.getOrderItems();
+        List<OrderItem> updatedItems = customerOrderDTO.getOrderItems().stream()
+                .map(orderItemMapper::toEntity)
+                .toList();
 
         // Iterate through the existing items to check which need to be modified or deleted
         for (OrderItem existingItem : existingOrder.getOrderItems()) {
@@ -114,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<CustomerOrderDTO> getAllOrders() {
-        List<CustomerOrder> orders = customerOrderRepository.findAll();
+        List<CustomerOrder> orders = customerOrderRepository.findAllWithDetails();
         return orders.stream()
                 .map(customerOrderMapper::toDTO)
                 .toList();
@@ -131,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void updateOrderStatus(Long orderId, OrderStatus status) throws OrderException {
         CustomerOrder order = getOrderEntity(orderId);
-        order.setStatus(status);
+        order.setStatus(status.toString());
         customerOrderRepository.save(order);
     }
 
@@ -162,6 +165,12 @@ public class OrderServiceImpl implements OrderService {
         customerOrderRepository.delete(order);
     }
 
+    @Override
+    @Transactional
+    public void deleteOrderByClientId(Long clientId) {
+        customerOrderRepository.deleteCustomerOrderByClient_Id(clientId);
+    }
+
     /**
      * Confirms the order, typically transitioning its status and performing any additional checks.
      *
@@ -172,7 +181,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void confirmOrder(Long orderId) throws OrderException {
         CustomerOrder order = getOrderEntity(orderId);
-        order.setStatus(OrderStatus.CONFIRMED);
+        order.setStatus(OrderStatus.CONFIRMED.toString());
         customerOrderRepository.save(order);
     }
 
@@ -195,11 +204,13 @@ public class OrderServiceImpl implements OrderService {
      */
     @SneakyThrows
     private void validateOrderItems(CustomerOrderDTO customerOrderDTO) {
-        for (OrderItem orderItem : customerOrderDTO.getOrderItems()) {
+        for (OrderItem orderItem : customerOrderDTO.getOrderItems().stream()
+                .map(orderItemMapper::toEntity)
+                .toList()) {
             ItemDTO item = itemService.getItemById(orderItem.getInventory().getItem().getId());
             InventoryDTO inventory = inventoryService.getInventoryById(item.getId());
 
-            if (inventory.getQuantity() < orderItem.getQuantity() && !orderItem.getInventory().getIsActive()) {
+            if (inventory.getQuantity() < orderItem.getQuantity() && Boolean.TRUE.equals(!orderItem.getInventory().getIsActive())) {
                 throw new OrderException("Not enough stock for item: " + item.getName());
             }
 

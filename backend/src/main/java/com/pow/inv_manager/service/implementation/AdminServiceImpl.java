@@ -58,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
     @SneakyThrows
     @Override
     public AuthResponse register(AdminDTO adminDTO) {
-        if (adminRepository.existsByEmail(adminDTO.getEmail())) {
+        if (Boolean.TRUE.equals(adminRepository.existsByEmail(adminDTO.getEmail()))) {
             throw new AdminException("Email it's already in use");
         }
 

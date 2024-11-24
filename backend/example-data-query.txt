@@ -1,11 +1,3 @@
-INSERT INTO client (first_name, last_name, email, phone, password, role, address_id)
-VALUES
-    ('John', 'Doe', 'john.doe@example.com', '1234567890', 'password123', 'ADMIN', 1),
-    ('Jane', 'Smith', 'jane.smith@example.com', '0987654321', 'securepass456', 'USER', 2),
-    ('Alice', 'Johnson', 'alice.johnson@example.com', '5551234567', 'alicepass789', 'USER', 3),
-    ('Bob', 'Brown', 'bob.brown@example.com', '4449876543', 'bobsecure123', 'ADMIN', 4),
-    ('Charlie', 'Davis', 'charlie.davis@example.com', '3334567890', 'charliepass456', 'USER', 5);
-
 INSERT INTO address (city, country, street)
 VALUES
     ('Madrid', 'España', 'Calle Mayor 1'),
@@ -38,6 +30,14 @@ VALUES
     ('Toledo', 'España', 'Calle Comedias 32'),
     ('Cáceres', 'España', 'Calle de la Soledad 10');
 
+INSERT INTO client (first_name, last_name, email, phone, password, role, address_id)
+VALUES
+    ('John', 'Doe', 'john.doe@example.com', '1234567890', 'password123', 'ADMIN', 1),
+    ('Jane', 'Smith', 'jane.smith@example.com', '0987654321', 'securepass456', 'USER', 2),
+    ('Alice', 'Johnson', 'alice.johnson@example.com', '5551234567', 'alicepass789', 'USER', 3),
+    ('Bob', 'Brown', 'bob.brown@example.com', '4449876543', 'bobsecure123', 'ADMIN', 4),
+    ('Charlie', 'Davis', 'charlie.davis@example.com', '3334567890', 'charliepass456', 'USER', 5);
+
 INSERT INTO supplier (first_name, last_name, company_name, email, role, address_id)
 VALUES
     ('Juan', 'Perez', 'Comercial S.A.', 'juan.perez@comercial.com', 'Proveedor', 6),
@@ -61,34 +61,54 @@ VALUES
     ('Fernando', 'Castro', 'Castro Electronics', 'fernando.castro@castroelectronics.com', 'Proveedor', 24),
     ('Elena', 'Torres', 'ElectroMaster', 'elena.torres@electromaster.com', 'Proveedor', 25);
 
-INSERT INTO Item (name, description, category, price, photo) VALUES
-                                                                 ('Item 1', 'Description for Item 1', 'CATEGORY1', 10.99, 'photo1.jpg'),
-                                                                 ('Item 2', 'Description for Item 2', 'CATEGORY2', 15.49, 'photo2.jpg'),
-                                                                 ('Item 3', 'Description for Item 3', 'CATEGORY3', 12.75, 'photo3.jpg'),
-                                                                 ('Item 4', 'Description for Item 4', 'CATEGORY4', 20.00, 'photo4.jpg'),
-                                                                 ('Item 5', 'Description for Item 5', 'CATEGORY1', 9.99, 'photo5.jpg'),
-                                                                 ('Item 6', 'Description for Item 6', 'CATEGORY2', 18.99, 'photo6.jpg'),
-                                                                 ('Item 7', 'Description for Item 7', 'CATEGORY3', 25.00, 'photo7.jpg'),
-                                                                 ('Item 8', 'Description for Item 8', 'CATEGORY4', 30.99, 'photo8.jpg'),
-                                                                 ('Item 9', 'Description for Item 9', 'CATEGORY1', 5.49, 'photo9.jpg'),
-                                                                 ('Item 10', 'Description for Item 10', 'CATEGORY2', 8.99, 'photo10.jpg'),
-                                                                 ('Item 11', 'Description for Item 11', 'CATEGORY3', 7.50, 'photo11.jpg'),
-                                                                 ('Item 12', 'Description for Item 12', 'CATEGORY4', 14.99, 'photo12.jpg'),
-                                                                 ('Item 13', 'Description for Item 13', 'CATEGORY1', 19.49, 'photo13.jpg'),
-                                                                 ('Item 14', 'Description for Item 14', 'CATEGORY2', 22.75, 'photo14.jpg'),
-                                                                 ('Item 15', 'Description for Item 15', 'CATEGORY3', 16.50, 'photo15.jpg'),
-                                                                 ('Item 16', 'Description for Item 16', 'CATEGORY4', 13.99, 'photo16.jpg'),
-                                                                 ('Item 17', 'Description for Item 17', 'CATEGORY1', 11.00, 'photo17.jpg'),
-                                                                 ('Item 18', 'Description for Item 18', 'CATEGORY2', 29.99, 'photo18.jpg'),
-                                                                 ('Item 19', 'Description for Item 19', 'CATEGORY3', 6.75, 'photo19.jpg'),
-                                                                 ('Item 20', 'Description for Item 20', 'CATEGORY4', 27.99, 'photo20.jpg'),
-                                                                 ('Item 21', 'Description for Item 21', 'CATEGORY1', 21.49, 'photo21.jpg'),
-                                                                 ('Item 22', 'Description for Item 22', 'CATEGORY2', 18.00, 'photo22.jpg'),
-                                                                 ('Item 23', 'Description for Item 23', 'CATEGORY3', 24.75, 'photo23.jpg'),
-                                                                 ('Item 24', 'Description for Item 24', 'CATEGORY4', 19.99, 'photo24.jpg'),
-                                                                 ('Item 25', 'Description for Item 25', 'CATEGORY1', 14.00, 'photo25.jpg'),
-                                                                 ('Item 26', 'Description for Item 26', 'CATEGORY2', 20.50, 'photo26.jpg'),
-                                                                 ('Item 27', 'Description for Item 27', 'CATEGORY3', 10.99, 'photo27.jpg'),
-                                                                 ('Item 28', 'Description for Item 28', 'CATEGORY4', 23.49, 'photo28.jpg'),
-                                                                 ('Item 29', 'Description for Item 29', 'CATEGORY1', 26.75, 'photo29.jpg'),
-                                                                 ('Item 30', 'Description for Item 30', 'CATEGORY2', 17.99, 'photo30.jpg');
+-- Insertar 10 items
+INSERT INTO item (name, description, category, price, photo)
+VALUES
+    ('Laptop', 'High performance laptop', 'Electronics', 1500.99, 'laptop.jpg'),
+    ('Smartphone', 'Latest model smartphone', 'Electronics', 999.49, 'smartphone.jpg'),
+    ('Headphones', 'Wireless noise-canceling headphones', 'Electronics', 299.99, 'headphones.jpg'),
+    ('Tablet', '10-inch display tablet', 'Electronics', 499.99, 'tablet.jpg'),
+    ('Smartwatch', 'Fitness tracker and smartwatch', 'Wearables', 199.99, 'smartwatch.jpg'),
+    ('Gaming Console', 'Next-gen gaming console', 'Entertainment', 499.99, 'console.jpg'),
+    ('Camera', 'Digital SLR camera', 'Photography', 899.99, 'camera.jpg'),
+    ('Monitor', '4K UHD monitor', 'Electronics', 399.99, 'monitor.jpg'),
+    ('Printer', 'Wireless all-in-one printer', 'Office Supplies', 199.99, 'printer.jpg'),
+    ('Keyboard', 'Mechanical keyboard with RGB', 'Accessories', 129.99, 'keyboard.jpg');
+
+INSERT INTO inventory (item_id, quantity, location, is_active)
+VALUES
+    (1, 0, '', false), -- Asociado al primer item
+    (2, 0, '', false), -- Asociado al segundo item
+    (3, 0, '', false), -- Asociado al tercer item
+    (4, 0, '', false), -- Asociado al cuarto item
+    (5, 0, '', false), -- Asociado al quinto item
+    (6, 0, '', false), -- Asociado al sexto item
+    (7, 0, '', false), -- Asociado al séptimo item
+    (8, 0, '', false), -- Asociado al octavo item
+    (9, 0, '', false), -- Asociado al noveno item
+    (10, 0, '', false); -- Asociado al décimo item
+
+-- Crear tres órdenes en la tabla `customer_order`
+INSERT INTO customer_order (client_id, order_date, status, total_amount)
+VALUES
+    (1, '2024-11-23 10:00:00', 'PENDING', 2999.96), -- Orden 1
+    (2, '2024-11-23 11:00:00', 'SHIPPED', 999.49),  -- Orden 2
+    (3, '2024-11-23 12:00:00', 'DELIVERED', 1299.96); -- Orden 3
+
+-- Crear los detalles de cada orden en la tabla `order_item`
+-- Orden 1: Cliente compra un monitor y un teclado
+INSERT INTO order_item (order_id, inventory_id, quantity, unit_price)
+VALUES
+    (1, 8, 2, 399.99), -- Dos monitores
+    (1, 10, 4, 129.99); -- Cuatro teclados
+
+-- Orden 2: Cliente compra un smartphone
+INSERT INTO order_item (order_id, inventory_id, quantity, unit_price)
+VALUES
+    (2, 2, 1, 999.49); -- Un smartphone
+
+-- Orden 3: Cliente compra una cámara y una impresora
+INSERT INTO order_item (order_id, inventory_id, quantity, unit_price)
+VALUES
+    (3, 7, 1, 899.99), -- Una cámara
+    (3, 9, 2, 199.99); -- Dos impresoras
