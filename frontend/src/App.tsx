@@ -35,7 +35,8 @@ function App() {
                 path="/auth/login"
                 element={
                     <>
-                        <SignIn />
+                      <PageTitle title="Login"/>
+                      <SignIn />
                     </>
                 }
             />

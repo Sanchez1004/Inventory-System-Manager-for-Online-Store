@@ -42,7 +42,7 @@ public class CustomerOrder {
 
     private String status;
 
-    @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<OrderItem> orderItems;
 
@@ -52,5 +52,10 @@ public class CustomerOrder {
         totalAmount = orderItems.stream()
                 .mapToDouble(OrderItem::getSubtotal)
                 .sum();
+    }
+
+    public double getTotalAmount() {
+        calculateTotalAmount();
+        return totalAmount;
     }
 }

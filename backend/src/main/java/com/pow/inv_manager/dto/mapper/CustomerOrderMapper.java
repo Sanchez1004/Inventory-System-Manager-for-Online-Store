@@ -27,14 +27,14 @@ public class CustomerOrderMapper {
                 .status(customerOrder.getStatus())
                 .orderDate(customerOrder.getOrderDate())
                 .orderItems(customerOrder.getOrderItems().stream()
-                        .map(orderItem -> new OrderItemDTO(
-                                orderItem.getId(),
-                                orderItem.getInventory().getId(),
-                                orderItem.getInventory().getItem().getName(),
-                                orderItem.getQuantity(),
-                                orderItem.getUnitPrice(),
-                                orderItem.getSubtotal()
-                        )).toList())
+                        .map(orderItem -> OrderItemDTO.builder()
+                                .id(orderItem.getId())
+                                .unitPrice(orderItem.getUnitPrice())
+                                .subtotal(orderItem.getSubtotal())
+                                .inventoryName(orderItem.getInventory().getItem().getName())
+                                .inventoryId(orderItem.getInventory().getId())
+                                .quantity(orderItem.getQuantity())
+                                .build()).toList())
                 .clientFirstName(customerOrder.getClient().getFirstName())
                 .clientLastName(customerOrder.getClient().getLastName())
                 .clientPhone(customerOrder.getClient().getPhone())

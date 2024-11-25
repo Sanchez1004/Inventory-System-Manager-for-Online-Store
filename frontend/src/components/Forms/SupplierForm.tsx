@@ -32,7 +32,7 @@ const SupplierForm: React.FC<SupplierFormProps> = ({ initialData, onSubmit, onCl
     if (!formData?.lastName) formErrors.lastName = 'Last name is required.';
     if (!formData?.email) formErrors.email = 'Email is required.';
     if (!formData?.companyName) formErrors.companyName = 'Company name is required.';
-    if (!formData?.address?.country) formErrors.city = 'Country is required is required.';
+    if (!formData?.address?.country) formErrors.country = 'Country is required is required.';
 
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
@@ -117,7 +117,7 @@ const SupplierForm: React.FC<SupplierFormProps> = ({ initialData, onSubmit, onCl
                 onChange={handleInputChange}
                 className="w-full border rounded py-2 px-3"
               />
-              {errors.city && (
+              {errors.country && (
                 <p className="text-red-500 text-sm">{errors.country}</p>
               )}
             </div>

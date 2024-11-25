@@ -76,7 +76,7 @@ public class ItemServiceImpl implements ItemService {
         if (orderItem != null) {
             orderItemRepository.delete(orderItem);
         }
-        
+
         existingInventory.ifPresent(inventoryRepository::delete);
 
         itemRepository.delete(existingItem);

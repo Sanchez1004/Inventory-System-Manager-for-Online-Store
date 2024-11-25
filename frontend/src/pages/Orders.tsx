@@ -1,10 +1,10 @@
-import TableSuppliers from '../components/Tables/TableSuppliers.tsx';
+import TableOrders from '../components/Tables/TableOrders.tsx';
 
 const Orders = () => {
   return (
     <>
       <div className="flex flex-col gap-10">
-        <TableSuppliers />
+        <TableOrders />
       </div>
     </>
   );

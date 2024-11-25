@@ -11,6 +11,6 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Lo
 
     void deleteCustomerOrderByClient_Id(Long clientId);
 
-    @Query("SELECT o FROM CustomerOrder o JOIN FETCH o.client c JOIN FETCH o.orderItems oi")
-    List<CustomerOrder> findAllWithDetails();
+    @Query("SELECT co FROM CustomerOrder co JOIN FETCH co.orderItems oi JOIN FETCH co.client")
+    List<CustomerOrder> findAllWithOrderItemsAndClient();
 }

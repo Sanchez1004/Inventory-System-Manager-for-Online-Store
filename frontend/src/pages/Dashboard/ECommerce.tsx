@@ -326,7 +326,7 @@ const ECommerce: React.FC = () => {
             <p className="text-2xl font-semibold text-gray-800 dark:text-white">
               Last Order
             </p>
-            <div className="mt-2 grid grid-cols-8 md:grid-cols-5 md:gap-2 xl:grid-cols-8 2xl:gap-7.5">
+            <div className="mt-2 grid grid-cols-8 md:grid-cols-8 md:gap-2 xl:grid-cols-8 2xl:gap-7.5">
               <p className="col-span-2 text-sm font-medium text-gray-500 dark:text-white">
                 Client ID: {lastData.order?.clientId}{' '}
               </p>
@@ -345,7 +345,7 @@ const ECommerce: React.FC = () => {
                 {lastData.order?.clientCity},{lastData.order.clientStreet}
               </p>
               <p className="col-span-2 text-sm font-medium text-gray-500 dark:text-white">
-                Date :{' '}
+                Date : {' '}
                 {new Date(lastData.order?.orderDate).toLocaleDateString(
                   'en-US',
                   {
@@ -356,11 +356,11 @@ const ECommerce: React.FC = () => {
                   },
                 )}
               </p>
-              <p className="col-span-full text-sm font-medium text-gray-500 dark:text-white mt-2">
+              <div className="col-span-full text-sm font-medium text-gray-500 dark:text-white mt-2">
                 <p className="col-span-4 text-xl font-bold text-gray-500 dark:text-white">
                   Items:
                 </p>
-                <div>
+                <div className="overflow-y-auto max-h-64 border rounded-lg">
                   <div className="grid grid-cols-10 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-10 md:px-6 2xl:px-7.5">
                     <div className="col-span-1 flex">
                       <p className="font-medium">ID</p>
@@ -383,7 +383,7 @@ const ECommerce: React.FC = () => {
                     lastData.order.orderItems.map((item) => (
                       <div
                         key={item.id}
-                        className="grid grid-cols-10 items-center border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-10 md:px-6 2xl:px-7.5"
+                        className="grid grid-cols-10 items-center border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-10 md:px-10 2xl:px-7.5"
                       >
                         <div className="col-span-1 flex">
                           <p className="text-sm text-black dark:text-white">
@@ -402,12 +402,12 @@ const ECommerce: React.FC = () => {
                         </div>
                         <div className="col-span-2 flex place-content-center">
                           <p className="text-sm text-black dark:text-white">
-                            {item.unitPrice.toFixed(2)}
+                            ${item.unitPrice.toFixed(2)}
                           </p>
                         </div>
                         <div className="col-span-3 flex place-content-center">
                           <p className="text-sm text-black dark:text-white">
-                            {(
+                            ${(
                               item.subtotal ?? item.unitPrice * item.quantity
                             ).toFixed(2)}
                           </p>
@@ -422,9 +422,9 @@ const ECommerce: React.FC = () => {
                     </div>
                   )}
                 </div>
-              </p>
+              </div>
               <p className="col-span-4 text-xl font-bold text-gray-500 dark:text-white">
-                Total Amount: {lastData.order.totalAmount}
+                Total Amount: {(lastData.order.totalAmount).toFixed(2)}
               </p>
             </div>
           </div>

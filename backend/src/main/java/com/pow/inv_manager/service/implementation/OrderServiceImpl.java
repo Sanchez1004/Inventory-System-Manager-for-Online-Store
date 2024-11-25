@@ -117,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<CustomerOrderDTO> getAllOrders() {
-        List<CustomerOrder> orders = customerOrderRepository.findAllWithDetails();
+        List<CustomerOrder> orders = customerOrderRepository.findAllWithOrderItemsAndClient();
         return orders.stream()
                 .map(customerOrderMapper::toDTO)
                 .toList();

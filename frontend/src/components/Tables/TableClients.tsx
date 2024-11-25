@@ -19,7 +19,7 @@ const TableClients: React.FC = () => {
         const data = await getAllClients();
         setClients(data);
       } catch (error) {
-        console.error('Error al obtener los clientes:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setIsLoading(false);
       }
